@@ -8,5 +8,26 @@
 <body>
     <h1>Welcome to Learning Fun!</h1>
     <p>Let's explore math and phonics together</p>
+    <h2>Interactive Math</h2>
+<p>What is 2 + 3?</p>
+<input type="number" id="answer" placeholder="Your answer">
+<button onclick="checkAnswer()">Check Answer</button>
+<p id="feedback"></p>
+
+<script>
+function checkAnswer() {
+    const answer = document.getElementById('answer').value;
+    const feedback = document.getElementById('feedback');
+    if (parseInt(answer) === 5) {
+        feedback.textContent = 'Correct!';
+    } else {
+        feedback.textContent = 'Try again!';
+    }
+}
+</script>
+<h2>Phonics Fun</h2>
+<p><strong>Cat</strong> – /k/ /æ/ /t/</p>
+<p><strong>Dog</strong> – /d/ /ɒ/ /g/</p>
+
 </body>
 </html>
