@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Apple Addition Game</title>
+    <title>Math Fun: Addition Game</title>
     <style>
         body {
             font-family: 'Comic Sans MS', sans-serif;
@@ -18,16 +18,6 @@
         .problem {
             font-size: 2em;
             margin: 20px 0;
-        }
-        .apple-images {
-            display: flex;
-            justify-content: center;
-            margin: 10px 0;
-        }
-        .apple-images img {
-            width: 50px;
-            height: 50px;
-            margin: 0 5px;
         }
         input[type="number"] {
             font-size: 1.5em;
@@ -55,31 +45,25 @@
     </style>
 </head>
 <body>
-    <h1>Apple Addition Game</h1>
+    <h1>Math Fun: Addition Game</h1>
     <div class="problem" id="problem"></div>
-    <div class="apple-images" id="apple-images"></div>
     <input type="number" id="answer" placeholder="Your answer">
     <button onclick="checkAnswer()">Check Answer</button>
     <div class="feedback" id="feedback"></div>
 
     <script>
         const problems = [
-            { apples1: 2, apples2: 3, answer: 5 },
-            { apples1: 1, apples2: 4, answer: 5 },
-            { apples1: 3, apples2: 2, answer: 5 },
-            { apples1: 4, apples2: 1, answer: 5 },
-            { apples1: 0, apples2: 5, answer: 5 }
+            { question: '1 + 1', answer: 2 },
+            { question: '2 + 2', answer: 4 },
+            { question: '3 + 3', answer: 6 },
+            { question: '4 + 4', answer: 8 },
+            { question: '5 + 5', answer: 10 }
         ];
 
         let currentProblem = 0;
 
         function displayProblem() {
-            const problem = problems[currentProblem];
-            document.getElementById('problem').textContent = `How many apples are there in total?`;
-            document.getElementById('apple-images').innerHTML = `
-                ${'<img src="https://via.placeholder.com/50/ff0000/ffffff?text=🍎" alt="Apple">'.repeat(problem.apples1)}
-                ${'<img src="https://via.placeholder.com/50/ff0000/ffffff?text=🍎" alt="Apple">'.repeat(problem.apples2)}
-            `;
+            document.getElementById('problem').textContent = problems[currentProblem].question;
             document.getElementById('answer').value = '';
             document.getElementById('feedback').textContent = '';
         }
