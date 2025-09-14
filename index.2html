@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Math Adventure Game</title>
+    <style>
+        body {
+            font-family: 'Comic Sans MS', cursive;
+            background: linear-gradient(to right, #ffe259, #ffa751);
+            color: #333;
+            text-align: center;
+            margin: 0;
+            padding: 0;
+        }
+
+        .container {
+            padding: 30px;
+        }
+
+        h1 {
+            color: #d32f2f;
+            font-size: 3em;
+            margin-bottom: 10px;
+        }
+
+        .character {
+            font-size: 3em;
+        }
+
+        .scoreboard {
+            font-size: 1.2em;
+            margin-bottom: 20px;
+        }
+
+        .problem {
+            font-size: 2.5em;
+            margin: 20px 0;
+        }
+
+        input[type="number"] {
+            font-size: 1.5em;
+            padding: 10px;
+            width: 100px;
+            text-align: center;
+        }
+
+        .buttons {
+            margin-top: 15px;
+        }
+
+        button {
+            font-size: 1.2em;
+            padding: 10px 20px;
+            background-color: #4caf50;
+            color: white;
+            border: none;
+            cursor: pointer;
+            margin: 5px;
+            border-radius: 10px;
+        }
+
+        button:hover {
+            background-color: #45a049;
+        }
+
+        .feedback {
+            font-size: 1.8em;
+            margin-top: 20px;
+            font-weight: bold;
+            height: 40px;
+        }
+
+        .stars {
+            font-size: 1.8em;
+            color: gold;
+            margin-top: 10px;
+        }
+
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="character">🧙‍♂️ Math Wizard</div>
+        <h1>Math Adventure: Addition Quest</h1>
+
+        <div class="scoreboard">
+            Score: <span id="score">0</span> | Question <span id="questionNumber">1</span>/10
+        </div>
+
+        <div class="problem" id="problem">Loading...</div>
+        <input type="number" id="answer" placeholder="Your answer" autocomplete="off" />
+        
+        <div class="buttons">
+            <button onclick="checkAnswer()">Check</button>
+            <button onclick="nextQuestion()">Next</button>
+        </div>
+
+        <div class="feedback" id="feedback"></div>
+        <div class="stars" id="stars"></div>
+    </div>
+
+    <script>
+        let score = 0;
+        let questionCount = 0;
+        const totalQuestions = 10;
+        let currentAnswer = 0;
+
+        const problemEl = document.getElementById('problem');
+        const answerEl = document.getElementById('answer');
+        const feedbackEl = document.getElementById('feedback');
+        const starsEl = document.getElementById('stars');
+        const scoreEl = document.getElementById('score');
+        const questionNumberEl = document.getElementById('questionNumber');
+
+        function getRandomInt(min, max) {
+            return Math.floor(Math.random() * (max - min + 1)) + min;
+        }
+
+        function generateProblem() {
+            const a = getRandomInt(1, 10);
+            const b = getRandomInt(1, 10);
+            currentAnswer = a + b;
+            problemEl.textContent = `${a} + ${b} = ?`;
+            answerEl.value = '';
+            feedbackEl.textContent = '';
+            starsEl.textContent = '';
+        }
+
+        function checkAnswer() {
+            const userAnswer = parseInt(answerEl.value);
+            if (isNaN(userAnswer)) {
+                feedbackEl.textContent = '⛔️ Please enter a number!';
+                feedbackEl.style.color = 'red';
+                return;
+            }
+
+            if (userAnswer === currentAnswer) {
+                feedbackEl.textContent = '✅ Correct!';
+                feedbackEl.style.color = 'green';
+                starsEl.textContent = '🌟 Great job!';
+                score++;
+            } else {
+                feedbackEl.textContent = `❌ Oops! It was ${currentAnswer}`;
+                feedbackEl.style.color = 'red';
+                starsEl.textContent = '';
+            }
+
+            scoreEl.textContent = score;
+        }
+
+        function nextQuestion() {
+            questionCount++;
+            if (questionCount >= totalQuestions) {
+                endGame();
+            } else {
+                questionNumberEl.textContent = questionCount + 1;
+                generateProblem();
+            }
+        }
+
+        function endGame() {
+            problemEl.textContent = "🎉 Game Over!";
+            feedbackEl.textContent = `Your final score is ${score}/${totalQuestions}`;
+            feedbackEl.style.color = 'blue';
+            starsEl.textContent = score >= 8 ? '🏆 You’re a Math Master!' : '👍 Keep practicing!';
+            document.querySelector('.buttons').style.display = 'none';
+            answerEl.style.display = 'none';
+        }
+
+        // Start the game
+        generateProblem();
+    </script>
+</body>
+</html>
