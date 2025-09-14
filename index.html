@@ -1,92 +1,163 @@
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Math Fun: Addition Game</title>
-    <style>
-        body {
-            font-family: 'Comic Sans MS', sans-serif;
-            background-color: #ffeb3b;
-            color: #333;
-            text-align: center;
-            padding: 20px;
-        }
-        h1 {
-            color: #d32f2f;
-        }
-        .problem {
-            font-size: 2em;
-            margin: 20px 0;
-        }
-        input[type="number"] {
-            font-size: 1.5em;
-            padding: 10px;
-            width: 80px;
-            text-align: center;
-        }
-        button {
-            font-size: 1.2em;
-            padding: 10px 20px;
-            background-color: #4caf50;
-            color: white;
-            border: none;
-            cursor: pointer;
-            margin-top: 10px;
-        }
-        button:hover {
-            background-color: #45a049;
-        }
-        .feedback {
-            font-size: 1.5em;
-            margin-top: 20px;
-            font-weight: bold;
-        }
-    </style>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Magic Math Buses</title>
+  <style>
+    body {
+      font-family: 'Comic Sans MS', sans-serif;
+      background-color: #e0f7fa;
+      color: #333;
+      text-align: center;
+      padding: 20px;
+    }
+
+    h1 {
+      color: #00796b;
+      font-size: 2.5em;
+    }
+
+    .bus-container {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      margin: 20px 0;
+      flex-wrap: wrap;
+    }
+
+    .group {
+      margin: 10px 30px;
+      transition: transform 0.5s;
+    }
+
+    .group img {
+      width: 80px;
+      margin: 5px;
+    }
+
+    .symbol {
+      font-size: 3em;
+      margin: 0 10px;
+    }
+
+    .choices {
+      margin-top: 20px;
+    }
+
+    .choices button {
+      font-size: 1.5em;
+      padding: 10px 20px;
+      margin: 10px;
+      background-color: #4caf50;
+      color: white;
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+      transition: background-color 0.3s;
+    }
+
+    .choices button:hover {
+      background-color: #388e3c;
+    }
+
+    .feedback {
+      font-size: 1.8em;
+      margin-top: 20px;
+      font-weight: bold;
+    }
+  </style>
 </head>
 <body>
-    <h1>Math Fun: Addition Game</h1>
-    <div class="problem" id="problem"></div>
-    <input type="number" id="answer" placeholder="Your answer">
-    <button onclick="checkAnswer()">Check Answer</button>
-    <div class="feedback" id="feedback"></div>
+  <h1>Magic Math Buses!</h1>
 
-    <script>
-        const problems = [
-            { question: '1 + 1', answer: 2 },
-            { question: '2 + 2', answer: 4 },
-            { question: '3 + 3', answer: 6 },
-            { question: '4 + 4', answer: 8 },
-            { question: '5 + 5', answer: 10 }
-        ];
+  <div class="bus-container">
+    <div class="group" id="group1"></div>
+    <div class="symbol">+</div>
+    <div class="group" id="group2"></div>
+  </div>
 
-        let currentProblem = 0;
+  <div class="choices" id="choices"></div>
 
-        function displayProblem() {
-            document.getElementById('problem').textContent = problems[currentProblem].question;
-            document.getElementById('answer').value = '';
-            document.getElementById('feedback').textContent = '';
-        }
+  <div class="feedback" id="feedback"></div>
 
-        function checkAnswer() {
-            const userAnswer = parseInt(document.getElementById('answer').value);
-            const correctAnswer = problems[currentProblem].answer;
-            const feedback = document.getElementById('feedback');
+  <script>
+    const problems = [
+      { num1: 1, num2: 2 },
+      { num1: 2, num2: 3 },
+      { num1: 3, num2: 1 },
+      { num1: 4, num2: 2 },
+      { num1: 5, num2: 4 },
+    ];
 
-            if (userAnswer === correctAnswer) {
-                feedback.textContent = 'Correct! Well done!';
-                feedback.style.color = 'green';
-            } else {
-                feedback.textContent = 'Oops! Try again.';
-                feedback.style.color = 'red';
-            }
+    let currentProblem = 0;
 
-            currentProblem = (currentProblem + 1) % problems.length;
-            setTimeout(displayProblem, 2000);
-        }
+    function createBuses(count) {
+      const group = document.createElement('div');
+      for (let i = 0; i < count; i++) {
+        const img = document.createElement('img');
+        img.src = "https://upload.wikimedia.org/wikipedia/commons/thumb/1/1b/School_bus_icon.svg/120px-School_bus_icon.svg.png";
+        img.alt = "Bus";
+        group.appendChild(img);
+      }
+      return group;
+    }
 
-        displayProblem();
-    </script>
+    function displayProblem() {
+      const prob = problems[currentProblem];
+      const group1 = document.getElementById('group1');
+      const group2 = document.getElementById('group2');
+      const choices = document.getElementById('choices');
+      const feedback = document.getElementById('feedback');
+
+      group1.innerHTML = '';
+      group2.innerHTML = '';
+      feedback.textContent = '';
+      choices.innerHTML = '';
+
+      group1.appendChild(createBuses(prob.num1));
+      group2.appendChild(createBuses(prob.num2));
+
+      const correctAnswer = prob.num1 + prob.num2;
+      const options = shuffle([
+        correctAnswer,
+        correctAnswer + 1,
+        correctAnswer - 1
+      ]);
+
+      options.forEach(option => {
+        const btn = document.createElement('button');
+        btn.textContent = option;
+        btn.onclick = () => checkAnswer(option, correctAnswer);
+        choices.appendChild(btn);
+      });
+    }
+
+    function checkAnswer(selected, correct) {
+      const feedback = document.getElementById('feedback');
+      if (selected === correct) {
+        feedback.textContent = "🎉 That's right!";
+        feedback.style.color = "green";
+      } else {
+        feedback.textContent = "❌ Oops, try again!";
+        feedback.style.color = "red";
+        return;
+      }
+
+      currentProblem = (currentProblem + 1) % problems.length;
+      setTimeout(displayProblem, 2000);
+    }
+
+    function shuffle(array) {
+      for (let i = array.length - 1; i > 0; i--) {
+        const j = Math.floor(Math.random() * (i + 1));
+        [array[i], array[j]] = [array[j], array[i]];
+      }
+      return array;
+    }
+
+    displayProblem();
+  </script>
 </body>
 </html>
+
