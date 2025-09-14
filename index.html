@@ -1,163 +1,92 @@
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Math Game Concepts</title>
-  <style>
-    body {
-      font-family: 'Comic Sans MS', sans-serif;
-      background-color: #f3faff;
-      color: #333;
-      padding: 20px;
-      max-width: 900px;
-      margin: auto;
-    }
-
-    h1 {
-      text-align: center;
-      color: #4a90e2;
-      font-size: 2.8em;
-    }
-
-    .game-concept {
-      background-color: #ffffff;
-      border-radius: 10px;
-      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
-      margin: 20px 0;
-      padding: 20px;
-      transition: transform 0.3s ease;
-    }
-
-    .game-concept:hover {
-      transform: scale(1.02);
-    }
-
-    .emoji-title {
-      font-size: 1.8em;
-      margin-bottom: 10px;
-      color: #222;
-    }
-
-    ul {
-      list-style: disc;
-      padding-left: 20px;
-    }
-
-    .tools-section {
-      background-color: #e0f7fa;
-      padding: 20px;
-      border-radius: 10px;
-      margin-top: 40px;
-    }
-
-    table {
-      width: 100%;
-      border-collapse: collapse;
-      margin-top: 15px;
-    }
-
-    th, td {
-      border: 1px solid #ccc;
-      padding: 10px;
-      text-align: left;
-    }
-
-    th {
-      background-color: #b2ebf2;
-    }
-
-    @media (max-width: 600px) {
-      body {
-        padding: 10px;
-      }
-
-      h1 {
-        font-size: 2em;
-      }
-
-      .emoji-title {
-        font-size: 1.4em;
-      }
-    }
-  </style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Math Fun: Addition Game</title>
+    <style>
+        body {
+            font-family: 'Comic Sans MS', sans-serif;
+            background-color: #ffeb3b;
+            color: #333;
+            text-align: center;
+            padding: 20px;
+        }
+        h1 {
+            color: #d32f2f;
+        }
+        .problem {
+            font-size: 2em;
+            margin: 20px 0;
+        }
+        input[type="number"] {
+            font-size: 1.5em;
+            padding: 10px;
+            width: 80px;
+            text-align: center;
+        }
+        button {
+            font-size: 1.2em;
+            padding: 10px 20px;
+            background-color: #4caf50;
+            color: white;
+            border: none;
+            cursor: pointer;
+            margin-top: 10px;
+        }
+        button:hover {
+            background-color: #45a049;
+        }
+        .feedback {
+            font-size: 1.5em;
+            margin-top: 20px;
+            font-weight: bold;
+        }
+    </style>
 </head>
 <body>
-  <h1>🔧 Math Game Concept Ideas</h1>
+    <h1>Math Fun: Addition Game</h1>
+    <div class="problem" id="problem"></div>
+    <input type="number" id="answer" placeholder="Your answer">
+    <button onclick="checkAnswer()">Check Answer</button>
+    <div class="feedback" id="feedback"></div>
 
-  <div class="game-concept">
-    <div class="emoji-title">💥 1. Space Math Patrol</div>
-    <ul>
-      <li><strong>Theme:</strong> You’re a cadet on a math mission in space.</li>
-      <li><strong>Story:</strong> Fly from planet to planet solving addition/subtraction puzzles to rescue alien pets or repair ships.</li>
-      <li><strong>Game Style:</strong> Tap/drag to solve quick math puzzles (e.g., how many energy pods are missing).</li>
-      <li><strong>Design Style:</strong> Clean, bold colors, space gadgets — more “NASA-cool” than babyish.</li>
-    </ul>
-  </div>
+    <script>
+        const problems = [
+            { question: '1 + 1', answer: 2 },
+            { question: '2 + 2', answer: 4 },
+            { question: '3 + 3', answer: 6 },
+            { question: '4 + 4', answer: 8 },
+            { question: '5 + 5', answer: 10 }
+        ];
 
-  <div class="game-concept">
-    <div class="emoji-title">🍩 2. Donut Delivery Math</div>
-    <ul>
-      <li><strong>Inspired by:</strong> Scratch Garden.</li>
-      <li><strong>Theme:</strong> You run a donut truck and have to add and subtract donuts to fulfill orders.</li>
-      <li><strong>Fun Angle:</strong> Wacky characters (e.g., talking donut, dancing syrup bottle, etc.).</li>
-      <li><strong>Learning:</strong> Counting, grouping, adding/subtracting orders.</li>
-      <li><strong>Bonus:</strong> Could include original music or songs like Red Circle.</li>
-    </ul>
-  </div>
+        let currentProblem = 0;
 
-  <div class="game-concept">
-    <div class="emoji-title">🧪 3. Monster Math Lab</div>
-    <ul>
-      <li><strong>Theme:</strong> You’re a tiny scientist making potions with numbers.</li>
-      <li><strong>Gameplay:</strong> Add number ingredients to get the right formula.</li>
-      <li><strong>Cool Factor:</strong> Mad scientist gear, funky monsters.</li>
-      <li><strong>Educational Mechanics:</strong> Visual manipulatives for addition/subtraction (number jars, sliders, etc.).</li>
-    </ul>
-  </div>
+        function displayProblem() {
+            document.getElementById('problem').textContent = problems[currentProblem].question;
+            document.getElementById('answer').value = '';
+            document.getElementById('feedback').textContent = '';
+        }
 
-  <div class="game-concept">
-    <div class="emoji-title">🕹️ 4. Robo Repair</div>
-    <ul>
-      <li><strong>Theme:</strong> Fix up broken robots using math.</li>
-      <li><strong>Activity:</strong> Drag correct parts into place based on simple math problems.</li>
-      <li><strong>Why it works:</strong> Feels like engineering, allows creativity.</li>
-    </ul>
-  </div>
+        function checkAnswer() {
+            const userAnswer = parseInt(document.getElementById('answer').value);
+            const correctAnswer = problems[currentProblem].answer;
+            const feedback = document.getElementById('feedback');
 
-  <div class="tools-section">
-    <h2>📱 How to Build It?</h2>
-    <table>
-      <thead>
-        <tr>
-          <th>Tool</th>
-          <th>Good For</th>
-          <th>Notes</th>
-        </tr>
-      </thead>
-      <tbody>
-        <tr>
-          <td><strong>ScratchJr</strong></td>
-          <td>Drag & drop code + storytelling</td>
-          <td>Perfect if you want to prototype something simple for a tablet</td>
-        </tr>
-        <tr>
-          <td><strong>Construct 3</strong></td>
-          <td>Game design with visual logic</td>
-          <td>Good for building interactive games without deep coding</td>
-        </tr>
-        <tr>
-          <td><strong>Unity</strong> (with help)</td>
-          <td>Advanced game design</td>
-          <td>If you're up for a challenge or working with a dev</td>
-        </tr>
-        <tr>
-          <td><strong>Godot</strong></td>
-          <td>Open source, more hands-on</td>
-          <td>Great for learning game dev, but has a learning curve</td>
-        </tr>
-      </tbody>
-    </table>
-  </div>
+            if (userAnswer === correctAnswer) {
+                feedback.textContent = 'Correct! Well done!';
+                feedback.style.color = 'green';
+            } else {
+                feedback.textContent = 'Oops! Try again.';
+                feedback.style.color = 'red';
+            }
+
+            currentProblem = (currentProblem + 1) % problems.length;
+            setTimeout(displayProblem, 2000);
+        }
+
+        displayProblem();
+    </script>
 </body>
 </html>
